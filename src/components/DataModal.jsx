@@ -5,36 +5,16 @@ function DataModal({ reset, invoice, creditNote }) {
   let [isOpen, setIsOpen] = useState(false)
 
   function closeModal() {
+    const total = {
+      clp: invoice.amount_clp - creditNote.amount_clp,
+      usd: invoice.amount_usd - creditNote.amount_usd
+    }
     setIsOpen(false)
-    reset()
+    reset(total)
   }
 
   function openModal() {
     setIsOpen(true)
-  }
-
-
-  function toClp(amount) {
-    return Math.round(amount * 907)
-  }
-
-  function totalInvoice() {
-    let clpInvoice
-    let clpCredit
-
-    if (invoice.currency === 'CLP') {
-      clpInvoice = invoice.amount
-    } else {
-      clpInvoice = toClp(invoice.amount)
-    }
-
-    if (creditNote.currency === 'CLP') {
-      clpCredit = creditNote.amount
-    } else {
-      clpCredit = toClp(creditNote.amount)
-    }
-
-    return clpInvoice - clpCredit
   }
 
   return (
@@ -78,7 +58,7 @@ function DataModal({ reset, invoice, creditNote }) {
                             </span>
                             <span>
                               <span
-                                  className="text-gray-900 font-semibold">Monto:</span> {invoice.currency === 'CLP' ? invoice.amount : toClp(invoice.amount)} CLP
+                                  className="text-gray-900 font-semibold">Monto:</span> {invoice.amount_clp} CLP
                             </span>
                           </p>
                           <p className="flex flex-col">
@@ -87,12 +67,12 @@ function DataModal({ reset, invoice, creditNote }) {
                             </span>
                             <span>
                               <span
-                                  className="text-gray-900 font-semibold">Monto:</span> {creditNote.currency === 'CLP' ? creditNote.amount : toClp(creditNote.amount)} CLP
+                                  className="text-gray-900 font-semibold">Monto:</span> {creditNote.amount_clp} CLP
                             </span>
                           </p>
                           <p className="text-indigo-900 font-semibold text-md">
                             Monto restante de la
-                            factura: {totalInvoice()} CLP
+                            factura: {invoice.amount_clp - creditNote.amount_clp} CLP
                           </p>
                         </div>
                       </div>

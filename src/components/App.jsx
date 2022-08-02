@@ -61,15 +61,34 @@ function App() {
   useEffect(() => {
     // ! Api call, but get cors error
     // fetch("https://recruiting.api.bemmbo.com/invoices/pending").then(res => res.json()).then(res => setData(res.data));
-    const filterInvoices = data.filter(val => val.type === "received");
-    const filterNotes = data.filter(val => val.type === "credit_note");
+
+    const newData = data.map((item, index) => {
+      return {
+        ...item,
+        index: index + 1,
+        amount_clp: item.currency === 'CLP' ? item.amount : toClp(item.amount),
+        amount_usd: item.currency === 'USD' ? item.amount : toUsd(item.amount),
+      }
+    })
+
+    const filterInvoices = newData.filter(val => val.type === "received");
+    const filterCreditNotes = newData.filter(val => val.type === "credit_note");
+
     setInvoices(filterInvoices);
-    setCreditNotes(filterNotes);
+    setCreditNotes(filterCreditNotes);
   }, [data])
+
+  function toClp(amount) {
+    return Math.round(amount * 907)
+  }
+
+  function toUsd(amount) {
+    return Math.round(amount / 907)
+  }
 
   function selectOption(option) {
     if (option.type === 'received') {
-      const newData = creditNotes.filter(val => val.reference !== option.id);
+      const newData = creditNotes.filter(val => val.reference === option.id);
       setSelectedInvoice(option)
       setFilterCreditNotes(newData);
       setSelectedCreditNote(null)
@@ -78,9 +97,22 @@ function App() {
     }
   }
 
-  function reset() {
+  function reset(total) {
+    const updatedInvoice = invoices.map(val => {
+      if (val.id === selectedInvoice.id) {
+        return {
+          ...val,
+          amount_clp: total.clp,
+          amount_usd: total.usd,
+        }
+      }
+      return val
+    })
+
+    console.log(updatedInvoice)
     const newCreditNotes = creditNotes.filter(val => val.id !== selectedCreditNote.id);
 
+    setInvoices(updatedInvoice);
     setSelectedInvoice(null)
     setSelectedCreditNote(null)
     setFilterCreditNotes([])

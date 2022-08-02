@@ -7,21 +7,13 @@ function classNames(...classes) {
 
 function InvoiceDisplay({ options, selectOption, selected }) {
 
-  function toClp(amount) {
-    return Math.round(amount * 907)
-  }
-
-  function toUsd(amount) {
-    return Math.round(amount / 907)
-  }
-
   return (
       <RadioGroup value={selected} onChange={selectOption}>
         <RadioGroup.Label className="sr-only">Invoice plans</RadioGroup.Label>
         <div className="relative bg-white rounded-md -space-y-px">
           {options.map((option, idx) => (
               <RadioGroup.Option
-                  key={option.id}
+                  key={option.index}
                   value={option}
                   className={({ checked }) =>
                       classNames(
@@ -49,17 +41,17 @@ function InvoiceDisplay({ options, selectOption, selected }) {
                             as="span"
                             className={classNames(checked ? 'text-indigo-900' : 'text-gray-900', 'ml-3 font-medium')}
                         >
-                          <span className="font-semibold">inv_{idx + 1}</span> <span
+                          <span className="font-semibold">{option.id}</span> <span
                             className="font-medium text-gray-500">({option.organization_id})</span>
                         </RadioGroup.Label>
                       </div>
                       <RadioGroup.Description className="ml-6 pl-1 text-sm md:ml-0 md:pl-0 md:text-center">
                   <span className={classNames(checked ? 'text-indigo-900' : 'text-gray-900', 'font-medium')}>
                     <span
-                        className="font-semibold">${option.currency === 'CLP' ? option.amount : toClp(option.amount)} CLP</span>
+                        className="font-semibold">${option.amount_clp} CLP</span>
                   </span>{' '}
                         <span
-                            className={checked ? 'text-indigo-700' : 'text-gray-500'}>(${option.currency === 'USD' ? option.amount : toUsd(option.amount)} USD) </span>
+                            className={checked ? 'text-indigo-700' : 'text-gray-500'}>(${option.amount_usd} USD) </span>
                       </RadioGroup.Description>
                       <RadioGroup.Description
                           className={classNames(
@@ -67,7 +59,7 @@ function InvoiceDisplay({ options, selectOption, selected }) {
                               'ml-6 pl-1 text-sm md:ml-0 md:pl-0 md:text-right'
                           )}
                       >
-                        {option.type === 'received' ? 'Recibida' : 'Nota de crédito'}
+                        {option.type === 'received' ? 'Recibida' : option.reference}
                       </RadioGroup.Description>
                     </>
                 )}
