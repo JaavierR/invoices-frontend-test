@@ -79,14 +79,12 @@ function App() {
   }
 
   function reset() {
-    const filterInvoices = data.filter(val => val.type === "received");
     const newCreditNotes = creditNotes.filter(val => val.id !== selectedCreditNote.id);
 
     setSelectedInvoice(null)
     setSelectedCreditNote(null)
     setFilterCreditNotes([])
 
-    setInvoices(filterInvoices);
     setCreditNotes(newCreditNotes);
   }
 
