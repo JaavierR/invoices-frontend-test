@@ -6,7 +6,6 @@ function classNames(...classes) {
 }
 
 function InvoiceDisplay({ options, selectOption, selected }) {
-
   return (
       <RadioGroup value={selected} onChange={selectOption}>
         <RadioGroup.Label className="sr-only">Invoice plans</RadioGroup.Label>

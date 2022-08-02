@@ -62,10 +62,9 @@ function App() {
     // ! Api call, but get cors error
     // fetch("https://recruiting.api.bemmbo.com/invoices/pending").then(res => res.json()).then(res => setData(res.data));
 
-    const newData = data.map((item, index) => {
+    const newData = data.map((item) => {
       return {
         ...item,
-        index: index + 1,
         amount_clp: item.currency === 'CLP' ? item.amount : toClp(item.amount),
         amount_usd: item.currency === 'USD' ? item.amount : toUsd(item.amount),
       }
@@ -106,10 +105,10 @@ function App() {
           amount_usd: total.usd,
         }
       }
+
       return val
     })
 
-    console.log(updatedInvoice)
     const newCreditNotes = creditNotes.filter(val => val.id !== selectedCreditNote.id);
 
     setInvoices(updatedInvoice);
@@ -123,14 +122,14 @@ function App() {
   return (
       <div className="max-w-4xl mx-auto my-6 space-y-6">
         <div>
-          <h1 className="font-bold text-lg text-center mb-6">Selecciona una factura</h1>
+          <h1 className="font-bold text-xl text-center mb-6">Selecciona una factura</h1>
           <InvoiceDisplay options={invoices} selected={selectedInvoice}
                           selectOption={selectOption}/>
         </div>
 
         {filterCreditNotes.length > 0 && (
             <div>
-              <h1 className="font-bold text-lg text-center mb-6">Selecciona una nota de credito</h1>
+              <h1 className="font-bold text-xl text-center mb-6">Selecciona una nota de credito</h1>
               <InvoiceDisplay options={filterCreditNotes} selectOption={selectOption} selected={selectedCreditNote}/>
             </div>
         )}
