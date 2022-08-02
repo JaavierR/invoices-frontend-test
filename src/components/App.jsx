@@ -67,15 +67,15 @@ function App() {
     setCreditNotes(filterNotes);
   }, [data])
 
-  function selectCreditNote(option) {
+  function selectOption(option) {
     if (option.type === 'received') {
       const newData = creditNotes.filter(val => val.reference !== option.id);
       setSelectedInvoice(option)
       setFilterCreditNotes(newData);
+      setSelectedCreditNote(null)
     } else {
       setSelectedCreditNote(option)
     }
-
   }
 
   function reset() {
@@ -94,13 +94,14 @@ function App() {
       <div className="max-w-4xl mx-auto my-6 space-y-6">
         <div>
           <h1 className="font-bold text-lg text-center mb-6">Selecciona una factura</h1>
-          <InvoiceDisplay options={invoices} selectCreditNote={selectCreditNote}/>
+          <InvoiceDisplay options={invoices} selected={selectedInvoice}
+                          selectOption={selectOption}/>
         </div>
 
         {filterCreditNotes.length > 0 && (
             <div>
               <h1 className="font-bold text-lg text-center mb-6">Selecciona una nota de credito</h1>
-              <InvoiceDisplay options={filterCreditNotes} selectCreditNote={selectCreditNote}/>
+              <InvoiceDisplay options={filterCreditNotes} selectOption={selectOption} selected={selectedCreditNote}/>
             </div>
         )}
 

@@ -1,12 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { RadioGroup } from '@headlessui/react'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-function InvoiceDisplay({ options, selectCreditNote }) {
-  const [selected, setSelected] = useState()
+function InvoiceDisplay({ options, selectOption, selected }) {
 
   function toClp(amount) {
     return Math.round(amount * 907)
@@ -14,11 +13,6 @@ function InvoiceDisplay({ options, selectCreditNote }) {
 
   function toUsd(amount) {
     return Math.round(amount / 907)
-  }
-
-  function selectOption(option) {
-    selectCreditNote(option)
-    setSelected(option)
   }
 
   return (
